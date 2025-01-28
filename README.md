@@ -197,7 +197,7 @@ class MultiExampleScreen extends StatelessWidget {
 
 ## Example Project
 
-For a complete example, check out the [example folder](https://github.com/majlindavdylaj/lindi/example) in the repository.
+For a complete example, check out the [example folder](https://github.com/majlindavdylaj/lindi/tree/main/example) in the repository.
 
 ---
 
