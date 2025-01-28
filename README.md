@@ -1,4 +1,4 @@
-# Lindi Library
+# Lindi
 
 Lindi is a lightweight and reactive state management library for Flutter that simplifies building applications with dynamic UI updates. It enables developers to manage state using `LindiViewModel` and provides powerful widgets like `LindiBuilder` and `MultiLindiBuilder` to listen and react to changes in state.
 
