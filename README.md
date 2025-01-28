@@ -40,7 +40,7 @@ Create a class that extends `LindiViewModel` to manage your state:
 ```dart
 import 'package:lindi/lindi.dart';
 
-class CounterLLindiViewModel extends LindiViewModel {
+class CounterLindiViewModel extends LindiViewModel {
   int counter = 0;
 
   void increment() {
