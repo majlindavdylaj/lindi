@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lindi/lindi.dart';
 
 void main() {
-  // Register the CounterLindiViewModel globally
+  // Register the LindiViewModels globally
   LindiInjector.register(CounterLindiViewModel());
+  LindiInjector.register(ApiLindiViewModel()..fetchData());
   runApp(const MyApp());
 }
 
@@ -36,28 +37,54 @@ class CounterLindiViewModel extends LindiViewModel {
   }
 }
 
+/// A ViewModel for handling API calls using the Lindi.
+///
+/// This class extends `LindiViewModel<String, String>`, meaning it manages:
+/// - **Data (`String`)**: The fetched API response.
+/// - **Error (`String`)**: Error messages related to the API request.
+class ApiLindiViewModel extends LindiViewModel<String, String> {
+  void fetchData() async {
+    setLoading();
+    try {
+      await Future.delayed(Duration(seconds: 4));
+      setData('Fetched');
+    } catch (e) {
+      setError('Something went wrong!');
+    } finally {
+      Future.delayed(Duration(seconds: 4)).then((e) {
+        setError('Timeout!');
+      });
+    }
+  }
+}
+
 // Counter Screen
 class CounterScreen extends StatelessWidget {
   const CounterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Retrieve the CounterLindiViewModel from the injector
+    // Retrieve LindiViewModels from the injector
     final counterViewModel = LindiInjector.get<CounterLindiViewModel>();
+    final apiViewModel = LindiInjector.get<ApiLindiViewModel>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Lindi Counter Example')),
+      appBar: AppBar(title: const Text('Lindi Example')),
       body: Center(
-        child: LindiBuilder(
-          viewModel: counterViewModel,
-          builder: (context) {
-            return Column(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Counter: ${counterViewModel.counter}',
-                  style: const TextStyle(fontSize: 24),
-                ),
+                LindiBuilder(
+                    viewModel: counterViewModel,
+                    builder: (context) {
+                      return Text(
+                        'Counter: ${counterViewModel.counter}',
+                        style: const TextStyle(fontSize: 24),
+                      );
+                    }),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: counterViewModel.increment,
@@ -68,8 +95,26 @@ class CounterScreen extends StatelessWidget {
                   child: const Text('Decrement'),
                 ),
               ],
-            );
-          },
+            ),
+            LindiBuilder(
+              viewModel: apiViewModel,
+              builder: (context) {
+                if (apiViewModel.isLoading) {
+                  return CircularProgressIndicator();
+                }
+                if (apiViewModel.hasError) {
+                  return Text(
+                    apiViewModel.error!,
+                    style: TextStyle(color: Colors.red),
+                  );
+                }
+                return Text(
+                  apiViewModel.data!,
+                  style: TextStyle(color: Colors.green),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

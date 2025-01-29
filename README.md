@@ -38,8 +38,6 @@ flutter pub get
 Create a class that extends `LindiViewModel` to manage your state:
 
 ```dart
-import 'package:lindi/lindi.dart';
-
 class CounterLindiViewModel extends LindiViewModel {
   int counter = 0;
 
@@ -55,6 +53,32 @@ class CounterLindiViewModel extends LindiViewModel {
 }
 ```
 
+Create a class that extends `LindiViewModel<D, E>` to manage your state:
+
+```dart
+class ApiLindiViewModel extends LindiViewModel<String, String> {
+  
+  void fetchData() async {
+    setLoading();
+    try{
+      await Future.delayed(Duration(seconds: 4));
+      setData('Fetched');
+    } catch (e) {
+      setError('Something went wrong!');
+    } finally {
+      Future.delayed(Duration(seconds: 4)).then((e) {
+        setError('Timeout!');
+      });
+    }
+
+  }
+}
+```
+
+- `ApiLindiViewModel` inherits from `LindiViewModel<String, String>`, where:
+    - `<D>` represents the data type (in this case, API response data as `String`).
+    - `<E>` represents the error type (in this case, error as `String`).
+
 ### 2. Register Your `LindiViewModel`
 
 Use `LindiInjector` to make the `LindiViewModel` accessible globally:
@@ -62,6 +86,7 @@ Use `LindiInjector` to make the `LindiViewModel` accessible globally:
 ```dart
 void main() {
   LindiInjector.register(CounterLindiViewModel());
+  LindiInjector.register(ApiLindiViewModel()..fetchData());
   runApp(const MyApp());
 }
 ```
@@ -71,9 +96,6 @@ void main() {
 React to changes in a single `LindiViewModel` with `LindiBuilder`:
 
 ```dart
-import 'package:flutter/material.dart';
-import 'package:lindi/lindi.dart';
-
 class CounterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -95,6 +117,35 @@ class CounterScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: counterViewModel.increment,
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+React to changes in a single `LindiViewModel<D, E>` with `LindiBuilder`:
+
+```dart
+class ApiScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final apiViewModel = LindiInjector.get<ApiLindiViewModel>();
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Counter Example')),
+      body: Center(
+        child: LindiBuilder(
+          viewModel: apiViewModel,
+          builder: (context) {
+            if(apiViewModel.isLoading){
+              return CircularProgressIndicator();
+            }
+            if(apiViewModel.hasError){
+              return Text(apiViewModel.error!);
+            }
+            return Text(apiViewModel.data!);
+          },
+        ),
       ),
     );
   }
@@ -171,6 +222,9 @@ class MultiExampleScreen extends StatelessWidget {
 
 - Extend this class to define your state management logic.
 - Call `notify()` to update listeners when state changes.
+- Call `setLoading()` to mark the LindiViewModel as loading and resets any previous error.
+- Call `setData(D data)` to update the LindiViewModel with new data and stops loading.
+- Call `setError(E error)` to store an error.
 
 ### `LindiBuilder`
 
