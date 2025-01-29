@@ -128,31 +128,33 @@ class MultiExampleScreen extends StatelessWidget {
       body: LindiMultiBuilder(
         viewModels: [counterViewModel, themeViewModel],
         builder: (context) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Counter: ${counterViewModel.counter}',
-                style: const TextStyle(fontSize: 24),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: counterViewModel.increment,
-                child: const Text('Increment Counter'),
-              ),
-              const SizedBox(height: 40),
-              Text(
-                'Current Theme: ${themeViewModel.isDarkMode ? "Dark" : "Light"}',
-                style: const TextStyle(fontSize: 18),
-              ),
-              const SizedBox(height: 20),
-              IconButton(
-                icon: Icon(
-                  themeViewModel.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Counter: ${counterViewModel.counter}',
+                  style: const TextStyle(fontSize: 24),
                 ),
-                onPressed: themeViewModel.toggleTheme,
-              ),
-            ],
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: counterViewModel.increment,
+                  child: const Text('Increment Counter'),
+                ),
+                const SizedBox(height: 40),
+                Text(
+                  'Current Theme: ${themeViewModel.isDarkMode ? "Dark" : "Light"}',
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 20),
+                IconButton(
+                  icon: Icon(
+                    themeViewModel.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                  ),
+                  onPressed: themeViewModel.toggleTheme,
+                ),
+              ],
+            ),
           );
         },
       ),
