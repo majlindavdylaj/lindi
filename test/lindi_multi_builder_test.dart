@@ -4,7 +4,6 @@ import 'package:lindi/lindi.dart';
 
 /// A simple test view model for testing LindiBuilder
 class CounterTestLindiViewModel extends LindiViewModel {
-
   int counter = 0;
 
   void increment() {
@@ -20,7 +19,6 @@ class CounterTestLindiViewModel extends LindiViewModel {
 
 /// A simple test view model for testing LindiBuilder
 class AsyncTestLindiViewModel extends LindiViewModel<String, String> {
-
   void testLoading() async {
     setLoading();
   }
@@ -36,7 +34,8 @@ class AsyncTestLindiViewModel extends LindiViewModel<String, String> {
 
 void main() {
   group('LindiBuilder', () {
-    testWidgets('should rebuild when MultiLindiViewModels updates', (tester) async {
+    testWidgets('should rebuild when MultiLindiViewModels updates',
+        (tester) async {
       final counterViewModel = CounterTestLindiViewModel();
       final asyncViewModel = AsyncTestLindiViewModel()..testData();
 
@@ -47,12 +46,15 @@ void main() {
             builder: (context) {
               return Column(
                 children: [
-                  Text('${counterViewModel.counter}', textDirection: TextDirection.ltr),
-                  if(asyncViewModel.isLoading)
+                  Text('${counterViewModel.counter}',
+                      textDirection: TextDirection.ltr),
+                  if (asyncViewModel.isLoading)
                     Text('loading', textDirection: TextDirection.ltr),
-                  if(asyncViewModel.hasError)
-                    Text('${asyncViewModel.error}', textDirection: TextDirection.ltr),
-                  Text('${asyncViewModel.data}', textDirection: TextDirection.ltr),
+                  if (asyncViewModel.hasError)
+                    Text('${asyncViewModel.error}',
+                        textDirection: TextDirection.ltr),
+                  Text('${asyncViewModel.data}',
+                      textDirection: TextDirection.ltr),
                 ],
               );
             },

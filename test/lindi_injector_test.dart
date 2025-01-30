@@ -4,6 +4,7 @@ import 'package:lindi/src/utils/lindi_exception.dart';
 
 /// A simple test view model
 class TestViewModel1 extends LindiViewModel<int, String> {}
+
 class TestViewModel2 extends LindiViewModel<int, String> {}
 
 void main() {
@@ -21,9 +22,10 @@ void main() {
       expect(retrievedViewModel, same(viewModel));
     });
 
-    test('should throw an exception when retrieving an unregistered view model', () {
+    test('should throw an exception when retrieving an unregistered view model',
+        () {
       expect(
-            () => LindiInjector.get<TestViewModel2>(),
+        () => LindiInjector.get<TestViewModel2>(),
         throwsA(isA<LindiException>()),
       );
     });

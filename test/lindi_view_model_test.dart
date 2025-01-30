@@ -33,7 +33,8 @@ void main() {
     viewModel.removeListener(testListener);
     viewModel.notify();
 
-    expect(listenerCallCount, 1); // Should not increase since the listener was removed
+    expect(listenerCallCount,
+        1); // Should not increase since the listener was removed
   });
 
   test('should update loading state and notify listeners', () {

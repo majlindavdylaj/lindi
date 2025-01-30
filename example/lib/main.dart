@@ -46,10 +46,10 @@ class CounterLindiViewModel extends LindiViewModel {
 /// - **Error (`String`)**: Error messages related to the API request.
 class ApiLindiViewModel extends LindiViewModel<String, String> {
   void fetchData() async {
-    if(isLoading) return;
+    if (isLoading) return;
     setLoading();
     await Future.delayed(Duration(seconds: 4));
-    if(Random().nextBool()){
+    if (Random().nextBool()) {
       setData('Fetch');
     } else {
       setError('Timeout!');
@@ -117,14 +117,13 @@ class CounterScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 LindiBuilder(
-                  viewModel: apiViewModel,
-                  builder: (context) {
-                    return ElevatedButton(
-                      onPressed: apiViewModel.fetchData,
-                      child: const Text('Refresh'),
-                    );
-                  }
-                ),
+                    viewModel: apiViewModel,
+                    builder: (context) {
+                      return ElevatedButton(
+                        onPressed: apiViewModel.fetchData,
+                        child: const Text('Refresh'),
+                      );
+                    }),
               ],
             ),
           ],

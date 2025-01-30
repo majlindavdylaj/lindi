@@ -4,9 +4,8 @@ import 'package:lindi/lindi.dart';
 
 /// A simple test view model for testing LindiBuilder
 class CounterTestLindiViewModel extends LindiViewModel {
-  
   int counter = 0;
-  
+
   void increment() {
     counter++;
     notify();
@@ -20,7 +19,6 @@ class CounterTestLindiViewModel extends LindiViewModel {
 
 /// A simple test view model for testing LindiBuilder
 class AsyncTestLindiViewModel extends LindiViewModel<String, String> {
-
   void testLoading() async {
     setLoading();
   }
@@ -36,7 +34,9 @@ class AsyncTestLindiViewModel extends LindiViewModel<String, String> {
 
 void main() {
   group('LindiBuilder', () {
-    testWidgets('should rebuild when CounterTestLindiViewModel updates with notify()', (tester) async {
+    testWidgets(
+        'should rebuild when CounterTestLindiViewModel updates with notify()',
+        (tester) async {
       final viewModel = CounterTestLindiViewModel();
 
       await tester.pumpWidget(
@@ -44,7 +44,8 @@ void main() {
           home: LindiBuilder(
             viewModel: viewModel,
             builder: (context) {
-              return Text('${viewModel.counter}', textDirection: TextDirection.ltr);
+              return Text('${viewModel.counter}',
+                  textDirection: TextDirection.ltr);
             },
           ),
         ),
@@ -69,7 +70,9 @@ void main() {
       expect(find.text('-1'), findsOneWidget);
     });
 
-    testWidgets('should rebuild when AsyncTestLindiViewModel updates with setLoading, setData, setError', (tester) async {
+    testWidgets(
+        'should rebuild when AsyncTestLindiViewModel updates with setLoading, setData, setError',
+        (tester) async {
       final viewModel = AsyncTestLindiViewModel()..testLoading();
 
       await tester.pumpWidget(
@@ -77,10 +80,10 @@ void main() {
           home: LindiBuilder(
             viewModel: viewModel,
             builder: (context) {
-              if(viewModel.isLoading) {
+              if (viewModel.isLoading) {
                 return Text('loading', textDirection: TextDirection.ltr);
               }
-              if(viewModel.hasError) {
+              if (viewModel.hasError) {
                 return Text(viewModel.error!, textDirection: TextDirection.ltr);
               }
               return Text(viewModel.data!, textDirection: TextDirection.ltr);
@@ -104,7 +107,5 @@ void main() {
       // UI should update to reflect new state
       expect(find.text('error'), findsOneWidget);
     });
-
-    
   });
 }
