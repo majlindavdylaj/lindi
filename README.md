@@ -1,6 +1,6 @@
 # Lindi
 
-Lindi is a lightweight and reactive state management library for Flutter that simplifies building applications with dynamic UI updates. It enables developers to manage state using `LindiViewModel` and provides powerful widgets like `LindiBuilder` and `MultiLindiBuilder` to listen and react to changes in state.
+Lindi is a lightweight and reactive state management library for Flutter that simplifies building applications with dynamic UI updates. It enables developers to manage state using `LindiViewModel` and provides powerful widgets like `LindiBuilder` and `LindiMultiBuilder` to listen and react to changes in state.
 
 ## Features
 
@@ -60,24 +60,17 @@ class ApiLindiViewModel extends LindiViewModel<String, String> {
   
   void fetchData() async {
     setLoading();
-    try{
-      await Future.delayed(Duration(seconds: 4));
-      setData('Fetched');
-    } catch (e) {
-      setError('Something went wrong!');
-    } finally {
-      Future.delayed(Duration(seconds: 4)).then((e) {
-        setError('Timeout!');
-      });
-    }
-
+    await Future.delayed(Duration(seconds: 4));
+    setData('Fetched');
+    await Future.delayed(Duration(seconds: 3));
+    setError('Timeout!');
   }
 }
 ```
 
 - `ApiLindiViewModel` inherits from `LindiViewModel<String, String>`, where:
-    - `<D>` represents the data type (in this case, API response data as `String`).
-    - `<E>` represents the error type (in this case, error as `String`).
+  - `<D>` represents the data type (in this case, API response data as `String`).
+  - `<E>` represents the error type (in this case, error as `String`).
 
 ### 2. Register Your `LindiViewModel`
 
@@ -97,12 +90,11 @@ React to changes in a single `LindiViewModel` with `LindiBuilder`:
 
 ```dart
 class CounterScreen extends StatelessWidget {
-  @override
+  @override 
   Widget build(BuildContext context) {
     final counterViewModel = LindiInjector.get<CounterLindiViewModel>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Counter Example')),
       body: Center(
         child: LindiBuilder(
           viewModel: counterViewModel,
@@ -132,7 +124,6 @@ class ApiScreen extends StatelessWidget {
     final apiViewModel = LindiInjector.get<ApiLindiViewModel>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Counter Example')),
       body: Center(
         child: LindiBuilder(
           viewModel: apiViewModel,
@@ -173,9 +164,6 @@ class MultiExampleScreen extends StatelessWidget {
     final themeViewModel = LindiInjector.get<ThemeLindiViewModel>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('MultiLindi Example'),
-      ),
       body: LindiMultiBuilder(
         viewModels: [counterViewModel, themeViewModel],
         builder: (context) {
@@ -230,24 +218,24 @@ class MultiExampleScreen extends StatelessWidget {
 
 - Listens to a single `LindiViewModel`.
 - Parameters:
-    - `viewModel`: The `LindiViewModel` to listen to.
-    - `builder`: A function that rebuilds the UI with the updated state.
+  - `viewModel`: The `LindiViewModel` to listen to.
+  - `builder`: A function that rebuilds the UI with the updated state.
 
 ### `LindiMultiBuilder`
 
 - Listens to multiple `LindiViewModel` instances.
 - Parameters:
-    - `viewModels`: A list of `LindiViewModel` objects to listen to.
-    - `builder`: A function that rebuilds the UI with the updated states.
+  - `viewModels`: A list of `LindiViewModel` objects to listen to.
+  - `builder`: A function that rebuilds the UI with the updated states.
 
 ### `LindiInjector`
 
 - Dependency injection for `LindiViewModel` objects.
 - Methods:
-    - `register<T>(T instance)`: Registers a `LindiViewModel`.
-    - `get<T>()`: Retrieves a registered `LindiViewModel` instance.
-    - `exists<T>()`: Check if an instance exists.
-    - `clear()`: Clear all instances (optional for testing or cleanup).
+  - `register<T>(T instance)`: Registers a `LindiViewModel`.
+  - `get<T>()`: Retrieves a registered `LindiViewModel` instance.
+  - `exists<T>()`: Check if an instance exists.
+  - `clear()`: Clear all instances (optional for testing or cleanup).
 
 ---
 

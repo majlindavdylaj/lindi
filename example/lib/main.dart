@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:lindi/lindi.dart';
 
@@ -44,16 +46,13 @@ class CounterLindiViewModel extends LindiViewModel {
 /// - **Error (`String`)**: Error messages related to the API request.
 class ApiLindiViewModel extends LindiViewModel<String, String> {
   void fetchData() async {
+    if(isLoading) return;
     setLoading();
-    try {
-      await Future.delayed(Duration(seconds: 4));
-      setData('Fetched');
-    } catch (e) {
-      setError('Something went wrong!');
-    } finally {
-      Future.delayed(Duration(seconds: 4)).then((e) {
-        setError('Timeout!');
-      });
+    await Future.delayed(Duration(seconds: 4));
+    if(Random().nextBool()){
+      setData('Fetch');
+    } else {
+      setError('Timeout!');
     }
   }
 }
@@ -96,23 +95,37 @@ class CounterScreen extends StatelessWidget {
                 ),
               ],
             ),
-            LindiBuilder(
-              viewModel: apiViewModel,
-              builder: (context) {
-                if (apiViewModel.isLoading) {
-                  return CircularProgressIndicator();
-                }
-                if (apiViewModel.hasError) {
-                  return Text(
-                    apiViewModel.error!,
-                    style: TextStyle(color: Colors.red),
-                  );
-                }
-                return Text(
-                  apiViewModel.data!,
-                  style: TextStyle(color: Colors.green),
-                );
-              },
+            Column(
+              children: [
+                LindiBuilder(
+                  viewModel: apiViewModel,
+                  builder: (context) {
+                    if (apiViewModel.isLoading) {
+                      return CircularProgressIndicator();
+                    }
+                    if (apiViewModel.hasError) {
+                      return Text(
+                        apiViewModel.error!,
+                        style: TextStyle(color: Colors.red),
+                      );
+                    }
+                    return Text(
+                      apiViewModel.data!,
+                      style: TextStyle(color: Colors.green),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                LindiBuilder(
+                  viewModel: apiViewModel,
+                  builder: (context) {
+                    return ElevatedButton(
+                      onPressed: apiViewModel.fetchData,
+                      child: const Text('Refresh'),
+                    );
+                  }
+                ),
+              ],
             ),
           ],
         ),
