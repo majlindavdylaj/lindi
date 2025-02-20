@@ -51,5 +51,16 @@ void main() {
 
       expect(LindiInjector.exists<TestViewModel2>(), isFalse);
     });
+
+    test('should clear an instance', () {
+      final viewModel = TestViewModel2();
+      LindiInjector.register(viewModel);
+
+      expect(LindiInjector.exists<TestViewModel2>(), isTrue);
+
+      LindiInjector.unregister<TestViewModel2>();
+
+      expect(LindiInjector.exists<TestViewModel2>(), isFalse);
+    });
   });
 }

@@ -19,6 +19,14 @@ class LindiInjector {
     return instance;
   }
 
+  /// Unregister a specific instance
+  static void unregister<T extends LindiViewModel>() {
+    if (!_instances.containsKey(T)) {
+      throw LindiException('No instance of type $T found to unregister.');
+    }
+    _instances.remove(T);
+  }
+
   /// Check if an instance exists
   static bool exists<T extends LindiViewModel>() {
     return _instances.containsKey(T);

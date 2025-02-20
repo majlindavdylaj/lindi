@@ -1,4 +1,4 @@
-typedef Listener = void Function();
+typedef Listener = void Function(LindiViewModel viewModel);
 
 class LindiViewModel<D, E> {
   final List<Listener> _listeners = [];
@@ -8,8 +8,9 @@ class LindiViewModel<D, E> {
   E? _error;
 
   /// Getters
-  D? get data => _data;
   bool get isLoading => _isLoading;
+  bool get hasData => _data != null;
+  D? get data => _data;
   bool get hasError => _error != null;
   E? get error => _error;
 
@@ -26,29 +27,35 @@ class LindiViewModel<D, E> {
   /// Notify all listeners
   void notify() {
     for (final listener in _listeners) {
-      listener();
+      listener(this);
     }
   }
 
   /// Set loading state
   void setLoading() {
+    _reset();
     _isLoading = true;
-    _error = null;
     notify();
   }
 
   /// Set data state
   void setData(D data) {
+    _reset();
     _data = data;
-    _isLoading = false;
-    _error = null;
     notify();
   }
 
   /// Set error state
   void setError(E error) {
+    _reset();
     _error = error;
-    _isLoading = false;
     notify();
+  }
+
+  /// Reset state
+  void _reset() {
+    _data = null;
+    _isLoading = false;
+    _error = null;
   }
 }

@@ -46,7 +46,6 @@ class CounterLindiViewModel extends LindiViewModel {
 /// - **Error (`String`)**: Error messages related to the API request.
 class ApiLindiViewModel extends LindiViewModel<String, String> {
   void fetchData() async {
-    if (isLoading) return;
     setLoading();
     await Future.delayed(Duration(seconds: 4));
     if (Random().nextBool()) {
@@ -58,9 +57,14 @@ class ApiLindiViewModel extends LindiViewModel<String, String> {
 }
 
 // Counter Screen
-class CounterScreen extends StatelessWidget {
+class CounterScreen extends StatefulWidget {
   const CounterScreen({super.key});
 
+  @override
+  State<CounterScreen> createState() => _CounterScreenState();
+}
+
+class _CounterScreenState extends State<CounterScreen> {
   @override
   Widget build(BuildContext context) {
     // Retrieve LindiViewModels from the injector
@@ -77,13 +81,14 @@ class CounterScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 LindiBuilder(
-                    viewModel: counterViewModel,
-                    builder: (context) {
-                      return Text(
-                        'Counter: ${counterViewModel.counter}',
-                        style: const TextStyle(fontSize: 24),
-                      );
-                    }),
+                  viewModels: [counterViewModel],
+                  builder: (context) {
+                    return Text(
+                      'Counter: ${counterViewModel.counter}',
+                      style: const TextStyle(fontSize: 24),
+                    );
+                  },
+                ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: counterViewModel.increment,
@@ -98,7 +103,20 @@ class CounterScreen extends StatelessWidget {
             Column(
               children: [
                 LindiBuilder(
-                  viewModel: apiViewModel,
+                  viewModels: [apiViewModel, counterViewModel],
+                  listener: (context, viewModel) {
+                    if (viewModel is ApiLindiViewModel) {
+                      if (apiViewModel.isLoading) {
+                        debugPrint('Loading');
+                      }
+                      if (apiViewModel.hasError) {
+                        debugPrint('ERROR: ${apiViewModel.error}');
+                      }
+                      if (apiViewModel.hasData) {
+                        debugPrint('SUCCESS: ${apiViewModel.data}');
+                      }
+                    }
+                  },
                   builder: (context) {
                     if (apiViewModel.isLoading) {
                       return CircularProgressIndicator();
@@ -109,21 +127,27 @@ class CounterScreen extends StatelessWidget {
                         style: TextStyle(color: Colors.red),
                       );
                     }
-                    return Text(
-                      apiViewModel.data!,
-                      style: TextStyle(color: Colors.green),
-                    );
+                    if (apiViewModel.hasData) {
+                      return Text(
+                        apiViewModel.data!,
+                        style: TextStyle(color: Colors.green),
+                      );
+                    }
+                    return SizedBox.shrink();
                   },
                 ),
                 const SizedBox(height: 20),
                 LindiBuilder(
-                    viewModel: apiViewModel,
-                    builder: (context) {
-                      return ElevatedButton(
-                        onPressed: apiViewModel.fetchData,
-                        child: const Text('Refresh'),
-                      );
-                    }),
+                  viewModels: [apiViewModel],
+                  builder: (context) {
+                    return ElevatedButton(
+                      onPressed: apiViewModel.isLoading
+                          ? null
+                          : apiViewModel.fetchData,
+                      child: const Text('Refresh'),
+                    );
+                  },
+                ),
               ],
             ),
           ],

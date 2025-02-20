@@ -1,12 +1,11 @@
 # Lindi
 
-Lindi is a lightweight and reactive state management library for Flutter that simplifies building applications with dynamic UI updates. It enables developers to manage state using `LindiViewModel` and provides powerful widgets like `LindiBuilder` and `LindiMultiBuilder` to listen and react to changes in state.
+Lindi is a lightweight and reactive state management library for Flutter that simplifies building applications with dynamic UI updates. It enables developers to manage state using `LindiViewModel` and provides powerful widgets like `LindiBuilder` to listen and react to changes in state.
 
 ## Features
 
 - Easy state management with `LindiViewModel`.
-- Reactivity using `LindiBuilder` for single state.
-- Combine multiple state objects with `LindiMultiBuilder`.
+- Reactivity using `LindiBuilder` for single and multiple state.
 - Global dependency injection with `LindiInjector`.
 - Lightweight, intuitive, and easy to integrate.
 
@@ -97,7 +96,7 @@ class CounterScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: LindiBuilder(
-          viewModel: counterViewModel,
+          viewModels: [counterViewModel],
           builder: (context) {
             return Text(
               'Counter: ${counterViewModel.counter}',
@@ -126,7 +125,7 @@ class ApiScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: LindiBuilder(
-          viewModel: apiViewModel,
+          viewModels: [apiViewModel],
           builder: (context) {
             if(apiViewModel.isLoading){
               return CircularProgressIndicator();
@@ -143,7 +142,7 @@ class ApiScreen extends StatelessWidget {
 }
 ```
 
-### 4. Use `LindiMultiBuilder`
+### 4. Use `LindiBuilder`
 
 Listen to multiple `LindiViewModel` instances simultaneously:
 
@@ -164,8 +163,17 @@ class MultiExampleScreen extends StatelessWidget {
     final themeViewModel = LindiInjector.get<ThemeLindiViewModel>();
 
     return Scaffold(
-      body: LindiMultiBuilder(
+      body: LindiBuilder(
         viewModels: [counterViewModel, themeViewModel],
+        listener: (context, viewModel) {
+          if (viewModel is ThemeLindiViewModel) {
+            if(themeViewModel.isDarkMode){
+              debugPrint('Theme changed to dark mode');
+            } else {
+              debugPrint('Theme changed to light mode');
+            }
+          }
+        },
         builder: (context) {
           return Center(
             child: Column(
@@ -218,15 +226,9 @@ class MultiExampleScreen extends StatelessWidget {
 
 - Listens to a single `LindiViewModel`.
 - Parameters:
-  - `viewModel`: The `LindiViewModel` to listen to.
-  - `builder`: A function that rebuilds the UI with the updated state.
-
-### `LindiMultiBuilder`
-
-- Listens to multiple `LindiViewModel` instances.
-- Parameters:
   - `viewModels`: A list of `LindiViewModel` objects to listen to.
-  - `builder`: A function that rebuilds the UI with the updated states.
+  - `listener`: A callback function that listen when the `viewModel` updates.
+  - `builder`: A function that rebuilds the UI with the updated state.
 
 ### `LindiInjector`
 
@@ -234,6 +236,7 @@ class MultiExampleScreen extends StatelessWidget {
 - Methods:
   - `register<T>(T instance)`: Registers a `LindiViewModel`.
   - `get<T>()`: Retrieves a registered `LindiViewModel` instance.
+  - `unregister<T>()`: Unregister a specific instance of `LindiViewModel`.
   - `exists<T>()`: Check if an instance exists.
   - `clear()`: Clear all instances (optional for testing or cleanup).
 

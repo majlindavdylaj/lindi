@@ -14,6 +14,7 @@ void main() {
   });
 
   test('should initialize with default values', () {
+    expect(viewModel.hasData, isFalse);
     expect(viewModel.data, isNull);
     expect(viewModel.isLoading, isFalse);
     expect(viewModel.hasError, isFalse);
@@ -21,7 +22,7 @@ void main() {
   });
 
   test('should add and remove listeners', () {
-    void testListener() {
+    void testListener(LindiViewModel viewModel) {
       listenerCallCount++;
     }
 
@@ -38,26 +39,29 @@ void main() {
   });
 
   test('should update loading state and notify listeners', () {
-    viewModel.addListener(() {
+    viewModel.addListener((viewModel) {
       listenerCallCount++;
     });
 
     viewModel.setLoading();
 
     expect(viewModel.isLoading, isTrue);
+    expect(viewModel.hasData, isFalse);
+    expect(viewModel.data, isNull);
     expect(viewModel.hasError, isFalse);
     expect(viewModel.error, isNull);
     expect(listenerCallCount, 1);
   });
 
   test('should update data and notify listeners', () {
-    viewModel.addListener(() {
+    viewModel.addListener((viewModel) {
       listenerCallCount++;
     });
 
     viewModel.setData(42);
 
     expect(viewModel.data, 42);
+    expect(viewModel.hasData, isTrue);
     expect(viewModel.isLoading, isFalse);
     expect(viewModel.hasError, isFalse);
     expect(viewModel.error, isNull);
@@ -65,12 +69,13 @@ void main() {
   });
 
   test('should update error state and notify listeners', () {
-    viewModel.addListener(() {
+    viewModel.addListener((viewModel) {
       listenerCallCount++;
     });
 
     viewModel.setError("Something went wrong");
 
+    expect(viewModel.hasData, isFalse);
     expect(viewModel.data, isNull);
     expect(viewModel.isLoading, isFalse);
     expect(viewModel.hasError, isTrue);
