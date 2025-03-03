@@ -13,7 +13,7 @@ Lindi is a lightweight and reactive state management library for Flutter that si
 
 ## Installation
 
-[![pub package](https://img.shields.io/pub/v/lindi.svg)](https://pub.dartlang.org/packages/lindi)
+[![pub package](https://img.shields.io/pub/v/lindi?color=blue)](https://pub.dartlang.org/packages/lindi)
 
 Add Lindi to your Flutter project by including it in your `pubspec.yaml`:
 
