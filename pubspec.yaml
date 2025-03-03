@@ -3,6 +3,9 @@ description: "Lindi is a lightweight and reactive state management library for F
 version: 0.2.0
 homepage: https://github.com/majlindavdylaj/lindi
 repository: https://github.com/majlindavdylaj/lindi
+issue_tracker: https://github.com/majlindavdylaj/lindi/issues
+topics: [lindi, state-management]
+funding: [https://patreon.com/koddev]
 
 environment:
   sdk: '>=3.1.0 <4.0.0'
@@ -17,8 +20,9 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+screenshots:
+  - description: The Lindi package logo.
+    path: assets/logo.png
 
 # The following section is specific to Flutter packages.
 flutter:
