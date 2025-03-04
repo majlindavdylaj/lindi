@@ -1,3 +1,15 @@
+## 0.3.0
+#### Removed
+- Removed `LindiInjector`.
+#### Added
+- Added `Lindi` to `inject` and `get` LindiViewModel instances, simpler and more straightforward
+```dart
+    Lindi.inject([CounterLindiViewModel()...]);
+    .
+    .
+    final counterViewModel = Lindi.get<CounterLindiViewModel>();
+```
+
 ## 0.2.0
 #### Removed
 - Removed `LindiMultiBuilder`, now you can use `LindiBuilder` for single and multiple viewModels.
