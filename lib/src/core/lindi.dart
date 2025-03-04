@@ -1,5 +1,4 @@
 import 'package:lindi/lindi.dart';
-import 'package:lindi/src/utils/lindi_exception.dart';
 
 class Lindi {
   static final Map<Type, dynamic> _instances = {};
