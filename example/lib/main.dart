@@ -5,8 +5,7 @@ import 'package:lindi/lindi.dart';
 
 void main() {
   // Register the LindiViewModels globally
-  LindiInjector.register(CounterLindiViewModel());
-  LindiInjector.register(ApiLindiViewModel()..fetchData());
+  Lindi.inject([CounterLindiViewModel(), ApiLindiViewModel()]);
   runApp(const MyApp());
 }
 
@@ -65,12 +64,12 @@ class CounterScreen extends StatefulWidget {
 }
 
 class _CounterScreenState extends State<CounterScreen> {
+  // Retrieve LindiViewModels from the injector
+  final counterViewModel = Lindi.get<CounterLindiViewModel>();
+  final apiViewModel = Lindi.get<ApiLindiViewModel>()..fetchData();
+
   @override
   Widget build(BuildContext context) {
-    // Retrieve LindiViewModels from the injector
-    final counterViewModel = LindiInjector.get<CounterLindiViewModel>();
-    final apiViewModel = LindiInjector.get<ApiLindiViewModel>();
-
     return Scaffold(
       appBar: AppBar(title: const Text('Lindi Example')),
       body: Center(

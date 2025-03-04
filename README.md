@@ -1,12 +1,12 @@
 # Lindi
 
-Lindi is a lightweight and reactive state management library for Flutter that simplifies building applications with dynamic UI updates. It enables developers to manage state using `LindiViewModel` and provides powerful widgets like `LindiBuilder` to listen and react to changes in state.
+Lindi is a lightweight and reactive state management library for Flutter that simplifies building applications with dynamic UI updates. It enables developers to manage state using `LindiViewModel` and provides powerful widget like `LindiBuilder` to listen and react to changes in state.
 
 ## Features
 
 - Easy state management with `LindiViewModel`.
 - Reactivity using `LindiBuilder` for single and multiple state.
-- Global dependency injection with `LindiInjector`.
+- Global dependency injection.
 - Lightweight, intuitive, and easy to integrate.
 
 ---
@@ -73,14 +73,10 @@ class ApiLindiViewModel extends LindiViewModel<String, String> {
 
 ### 2. Register Your `LindiViewModel`
 
-Use `LindiInjector` to make the `LindiViewModel` accessible globally:
+Use injector to make the `LindiViewModel` accessible globally:
 
 ```dart
-void main() {
-  LindiInjector.register(CounterLindiViewModel());
-  LindiInjector.register(ApiLindiViewModel()..fetchData());
-  runApp(const MyApp());
-}
+Lindi.inject([CounterLindiViewModel(), ApiLindiViewModel()]);
 ```
 
 ### 3. Use `LindiBuilder`
@@ -91,7 +87,7 @@ React to changes in a single `LindiViewModel` with `LindiBuilder`:
 class CounterScreen extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
-    final counterViewModel = LindiInjector.get<CounterLindiViewModel>();
+    final counterViewModel = Lindi.get<CounterLindiViewModel>();
 
     return Scaffold(
       body: Center(
@@ -120,7 +116,7 @@ React to changes in a single `LindiViewModel<D, E>` with `LindiBuilder`:
 class ApiScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final apiViewModel = LindiInjector.get<ApiLindiViewModel>();
+    final apiViewModel = Lindi.get<ApiLindiViewModel>();
 
     return Scaffold(
       body: Center(
@@ -159,8 +155,8 @@ class ThemeLindiViewModel extends LindiViewModel {
 class MultiExampleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final counterViewModel = LindiInjector.get<CounterLindiViewModel>();
-    final themeViewModel = LindiInjector.get<ThemeLindiViewModel>();
+    final counterViewModel = Lindi.get<CounterLindiViewModel>();
+    final themeViewModel = Lindi.get<ThemeLindiViewModel>();
 
     return Scaffold(
       body: LindiBuilder(
@@ -224,21 +220,16 @@ class MultiExampleScreen extends StatelessWidget {
 
 ### `LindiBuilder`
 
-- Listens to a single `LindiViewModel`.
 - Parameters:
   - `viewModels`: A list of `LindiViewModel` objects to listen to.
   - `listener`: A callback function that listen when the `viewModel` updates.
   - `builder`: A function that rebuilds the UI with the updated state.
 
-### `LindiInjector`
+### `Lindi`
 
-- Dependency injection for `LindiViewModel` objects.
 - Methods:
-  - `register<T>(T instance)`: Registers a `LindiViewModel`.
-  - `get<T>()`: Retrieves a registered `LindiViewModel` instance.
-  - `unregister<T>()`: Unregister a specific instance of `LindiViewModel`.
-  - `exists<T>()`: Check if an instance exists.
-  - `clear()`: Clear all instances (optional for testing or cleanup).
+  - `inject(List<LindiViewModel> instances)`: Inject a list of `LindiViewModel` instances.
+  - `T get<T extends LindiViewModel>()`: Retrieves an injected `LindiViewModel` instance.
 
 ---
 
