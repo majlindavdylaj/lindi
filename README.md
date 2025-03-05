@@ -1,11 +1,11 @@
 # Lindi
 
-Lindi is a lightweight and reactive state management library for Flutter that simplifies building applications with dynamic UI updates. It enables developers to manage state using `LindiViewModel` and provides powerful widget like `LindiBuilder` to listen and react to changes in state.
+Lindi is a lightweight and reactive state management library for Flutter that simplifies building applications with dynamic UI updates. It enables developers to manage state using `LindiViewModel` and provides powerful widgets like `LindiBuilder` to listen and react to changes in state.
 
 ## Features
 
 - Easy state management with `LindiViewModel`.
-- Reactivity using `LindiBuilder` for single and multiple state.
+- Reactivity using `LindiBuilder` for single and multiple states.
 - Global dependency injection.
 - Lightweight, intuitive, and easy to integrate.
 
@@ -214,7 +214,7 @@ class MultiExampleScreen extends StatelessWidget {
 
 - Extend this class to define your state management logic.
 - Call `notify()` to update listeners when state changes.
-- Call `setLoading()` to mark the LindiViewModel as loading and resets any previous error.
+- Call `setLoading()` to mark the LindiViewModel as loading and reset any previous error.
 - Call `setData(D data)` to update the LindiViewModel with new data and stops loading.
 - Call `setError(E error)` to store an error.
 
@@ -222,7 +222,7 @@ class MultiExampleScreen extends StatelessWidget {
 
 - Parameters:
   - `viewModels`: A list of `LindiViewModel` objects to listen to.
-  - `listener`: A callback function that listen when the `viewModel` updates.
+  - `listener`: A callback function that listens when the `viewModel` updates.
   - `builder`: A function that rebuilds the UI with the updated state.
 
 ### `Lindi`
