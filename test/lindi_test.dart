@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lindi/lindi.dart';
-import 'package:lindi/src/utils/lindi_exception.dart';
 
 /// A simple test view model
 class TestViewModel1 extends LindiViewModel<int, String> {}
