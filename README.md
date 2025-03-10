@@ -1,3 +1,11 @@
+<p align="center">
+	<a href="https://pub.dartlang.org/packages/lindi"><img src="https://img.shields.io/pub/v/lindi?color=blue" alt="Pub dev"></a>
+	<a href="https://github.com/majlindavdylaj/lindi/actions"><img src="https://github.com/majlindavdylaj/lindi/workflows/Build/badge.svg" alt="Build Status"></a>
+	<a href="https://discord.gg/CYMhKYht"><img src="https://img.shields.io/discord/1347558525962027009?logo=discord&color=blue
+" alt="Discord"></a>
+</p>
+
+
 # Lindi
 
 Lindi is a lightweight and reactive state management library for Flutter that simplifies building applications with dynamic UI updates. It enables developers to manage state using `LindiViewModel` and provides powerful widgets like `LindiBuilder` to listen and react to changes in state.
@@ -12,8 +20,6 @@ Lindi is a lightweight and reactive state management library for Flutter that si
 ---
 
 ## Installation
-
-[![pub package](https://img.shields.io/pub/v/lindi?color=blue)](https://pub.dartlang.org/packages/lindi)
 
 Add Lindi to your Flutter project by including it in your `pubspec.yaml`:
 
@@ -56,7 +62,7 @@ Create a class that extends `LindiViewModel<D, E>` to manage your state:
 
 ```dart
 class ApiLindiViewModel extends LindiViewModel<String, String> {
-  
+
   void fetchData() async {
     setLoading();
     await Future.delayed(Duration(seconds: 4));
@@ -85,7 +91,7 @@ React to changes in a single `LindiViewModel` with `LindiBuilder`:
 
 ```dart
 class CounterScreen extends StatelessWidget {
-  @override 
+  @override
   Widget build(BuildContext context) {
     final counterViewModel = Lindi.get<CounterLindiViewModel>();
 
