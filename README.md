@@ -1,8 +1,7 @@
 <p align="center">
 	<a href="https://pub.dartlang.org/packages/lindi"><img src="https://img.shields.io/pub/v/lindi?color=blue" alt="Pub dev"></a>
 	<a href="https://github.com/majlindavdylaj/lindi/actions"><img src="https://github.com/majlindavdylaj/lindi/workflows/Build/badge.svg" alt="Build Status"></a>
-	<a href="https://discord.gg/CYMhKYht"><img src="https://img.shields.io/discord/1347558525962027009?logo=discord&color=blue
-" alt="Discord"></a>
+	<a href="https://discord.gg/CYMhKYht"><img src="https://img.shields.io/discord/1347558525962027009?logo=discord&color=blue" alt="Discord"></a>
 </p>
 
 
