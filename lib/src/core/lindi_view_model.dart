@@ -1,6 +1,6 @@
 typedef Listener = void Function(LindiViewModel viewModel);
 
-class LindiViewModel<D, E> {
+abstract class LindiViewModel<D, E> {
   final List<Listener> _listeners = [];
 
   D? _data;
