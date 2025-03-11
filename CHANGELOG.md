@@ -1,3 +1,7 @@
+## 0.3.1
+- Deleted unused files.
+- Make LindiViewModel class abstract.
+
 ## 0.3.0
 #### Removed
 - Removed `LindiInjector`.
