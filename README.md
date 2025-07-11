@@ -37,6 +37,16 @@ flutter pub get
 
 ## Getting Started
 
+### Setup `Lindi`
+
+```dart
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Lindi.init();
+  runApp(App());
+}
+```
+
 ### 1. Define a `LindiViewModel`
 
 Create a class that extends `LindiViewModel` to manage your state:
@@ -68,6 +78,30 @@ class ApiLindiViewModel extends LindiViewModel<String, String> {
     setData('Fetched');
     await Future.delayed(Duration(seconds: 3));
     setError('Timeout!');
+  }
+}
+```
+
+Create a class that extends `LindiStorageViewModel<D, E>` to save your state in storage:
+
+```dart
+class StorageViewModel extends LindiStorageViewModel<int?, String> {
+  void increment() {
+    setData((data ?? 0) + 1);
+  }
+
+  void decrement() {
+    setData((data ?? 0) - 1);
+  }
+
+  @override
+  int? fromJson(Map<String, dynamic> json) {
+    return json['data'];
+  }
+
+  @override
+  Map<String, dynamic> toJson(int? d) {
+    return {"data": d};
   }
 }
 ```

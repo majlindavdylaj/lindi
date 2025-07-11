@@ -1,6 +1,6 @@
 name: lindi
 description: "Lindi is a lightweight and reactive state management library for Flutter that simplifies building applications with dynamic UI updates."
-version: 0.3.1
+version: 0.5.0
 homepage: https://github.com/majlindavdylaj/lindi
 repository: https://github.com/majlindavdylaj/lindi
 issue_tracker: https://github.com/majlindavdylaj/lindi/issues
@@ -14,6 +14,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  hive_ce: ^2.11.3
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
