@@ -82,6 +82,30 @@ class ApiLindiViewModel extends LindiViewModel<String, String> {
 }
 ```
 
+Create a class that extends `LindiStorageViewModel<D, E>` to save your state in storage:
+
+```dart
+class StorageViewModel extends LindiStorageViewModel<int?, String> {
+  void increment() {
+    setData((data ?? 0) + 1);
+  }
+
+  void decrement() {
+    setData((data ?? 0) - 1);
+  }
+
+  @override
+  int? fromJson(Map<String, dynamic> json) {
+    return json['data'];
+  }
+
+  @override
+  Map<String, dynamic> toJson(int? d) {
+    return {"data": d};
+  }
+}
+```
+
 - `ApiLindiViewModel` inherits from `LindiViewModel<String, String>`, where:
   - `<D>` represents the data type (in this case, API response data as `String`).
   - `<E>` represents the error type (in this case, error as `String`).
