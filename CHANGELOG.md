@@ -1,3 +1,8 @@
+## 0.5.0
+- Added `LindiStorageViewModel` to save data to storage
+- To use Lindi you now need to call `await Lindi.init()` before using Lindi
+- Updated to latest Flutter version
+
 ## 0.3.1
 - Deleted unused files.
 - Make LindiViewModel class abstract.

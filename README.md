@@ -37,6 +37,16 @@ flutter pub get
 
 ## Getting Started
 
+### Setup `Lindi`
+
+```dart
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Lindi.init();
+  runApp(App());
+}
+```
+
 ### 1. Define a `LindiViewModel`
 
 Create a class that extends `LindiViewModel` to manage your state:

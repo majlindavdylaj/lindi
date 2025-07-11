@@ -3,9 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lindi/lindi.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Lindi.init();
   // Register the LindiViewModels globally
-  Lindi.inject([CounterLindiViewModel(), ApiLindiViewModel()]);
+  Lindi.inject(
+      [CounterLindiViewModel(), ApiLindiViewModel(), StorageViewModel()]);
   runApp(const MyApp());
 }
 
@@ -44,6 +47,10 @@ class CounterLindiViewModel extends LindiViewModel {
 /// - **Data (`String`)**: The fetched API response.
 /// - **Error (`String`)**: Error messages related to the API request.
 class ApiLindiViewModel extends LindiViewModel<String, String> {
+  ApiLindiViewModel() {
+    fetchData();
+  }
+
   void fetchData() async {
     setLoading();
     await Future.delayed(Duration(seconds: 4));
@@ -52,6 +59,26 @@ class ApiLindiViewModel extends LindiViewModel<String, String> {
     } else {
       setError('Timeout!');
     }
+  }
+}
+
+class StorageViewModel extends LindiStorageViewModel<int?, String> {
+  void increment() {
+    setData((data ?? 0) + 1);
+  }
+
+  void decrement() {
+    setData((data ?? 0) - 1);
+  }
+
+  @override
+  int? fromJson(Map<String, dynamic> json) {
+    return json['data'];
+  }
+
+  @override
+  Map<String, dynamic> toJson(int? d) {
+    return {"data": d};
   }
 }
 
@@ -66,7 +93,8 @@ class CounterScreen extends StatefulWidget {
 class _CounterScreenState extends State<CounterScreen> {
   // Retrieve LindiViewModels from the injector
   final counterViewModel = Lindi.get<CounterLindiViewModel>();
-  final apiViewModel = Lindi.get<ApiLindiViewModel>()..fetchData();
+  final apiViewModel = Lindi.get<ApiLindiViewModel>();
+  final storageViewModel = Lindi.get<StorageViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +104,29 @@ class _CounterScreenState extends State<CounterScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LindiBuilder(
+                  viewModels: [storageViewModel],
+                  builder: (context) {
+                    return Text(
+                      'Storage Counter: ${storageViewModel.data}',
+                      style: const TextStyle(fontSize: 24),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: storageViewModel.increment,
+                  child: const Text('Increment'),
+                ),
+                ElevatedButton(
+                  onPressed: storageViewModel.decrement,
+                  child: const Text('Decrement'),
+                ),
+              ],
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
