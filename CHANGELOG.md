@@ -1,3 +1,7 @@
+## 0.5.1
+- Added property `storageName` to `Lindi.init()`
+- Updated to latest Flutter version
+
 ## 0.5.0
 - Added `LindiStorageViewModel` to save data to storage
 - To use Lindi you now need to call `await Lindi.init()` before using Lindi
