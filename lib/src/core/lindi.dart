@@ -24,11 +24,12 @@ class Lindi {
   }
 
   /// Initializes the storage system with the provided [storagePath].
-  static init({String? storagePath}) async {
+  static init({String? storagePath, String? storageName}) async {
     String path = storagePath ?? (await getTemporaryDirectory()).path;
+    String name = storageName ?? 'lindi_box';
     Hive.init(path);
     if (LindiStorage.box == null || !LindiStorage.box!.isOpen) {
-      LindiStorage.box = await Hive.openBox('lindi_box');
+      LindiStorage.box = await Hive.openBox(name);
     }
   }
 }
